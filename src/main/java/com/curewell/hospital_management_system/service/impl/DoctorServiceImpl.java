@@ -1,6 +1,8 @@
 package com.curewell.hospital_management_system.service.impl;
 
 import com.curewell.hospital_management_system.entity.Doctor;
+import com.curewell.hospital_management_system.exception.ResourceNotFoundException;
+import com.curewell.hospital_management_system.exception.GlobalExceptionHandler;
 import com.curewell.hospital_management_system.repository.DoctorRepository;
 import com.curewell.hospital_management_system.service.DoctorService;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,6 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Doctor getDoctorById(Long id) {
         return doctorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + id));
     }
 }
