@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -35,4 +36,8 @@ public class Surgery {
     @ManyToOne
     @JoinColumn(name = "specialization_id", nullable = false)
     private Specialization specialization;
+
+    @ManyToMany
+    @JoinTable(name = "surgery_doctors", joinColumns = @JoinColumn(name = "surgery_id"), inverseJoinColumns = @JoinColumn(name = "doctor_id"))
+    private List<Doctor> assistingDoctors;
 }

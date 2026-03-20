@@ -19,23 +19,37 @@ public class SurgeryServiceImpl implements SurgeryService {
     @Override
     public Surgery createSurgery(Surgery surgery) {
 
-        // Fetch existing surgeries
-        List<Surgery> existingSurgeries =
-                surgeryRepository.findByDoctorIdAndDate(
-                        surgery.getDoctor().getId(),
-                        surgery.getDate()
-                );
+        // Validate primary doctor
+        validateDoctorSchedule(surgery.getDoctor().getId(), surgery);
 
-        // Check overlap
-        for (Surgery existing : existingSurgeries) {
-
-            if (!(surgery.getEndTime().isBefore(existing.getStartTime()) ||
-                  surgery.getStartTime().isAfter(existing.getEndTime()))) {
-
-                throw new RuntimeException("Doctor already has a surgery in this time slot");
+        // Validate assisting doctors
+        if (surgery.getAssistingDoctors() != null) {
+            for (var doctor : surgery.getAssistingDoctors()) {
+                validateDoctorSchedule(doctor.getId(), surgery);
             }
         }
 
         return surgeryRepository.save(surgery);
+    }
+
+    // Helper method to check overlap
+    private void validateDoctorSchedule(Long doctorId, Surgery surgery) {
+
+        List<Surgery> existingSurgeries =
+                surgeryRepository.findByDoctorIdAndDate(doctorId, surgery.getDate());
+
+        for (Surgery existing : existingSurgeries) {
+
+            // Overlap condition
+            boolean isOverlapping =
+                    !(surgery.getEndTime().isBefore(existing.getStartTime()) ||
+                      surgery.getStartTime().isAfter(existing.getEndTime()));
+
+            if (isOverlapping) {
+                throw new RuntimeException(
+                        "Doctor with ID " + doctorId + " has a conflicting surgery"
+                );
+            }
+        }
     }
 }
