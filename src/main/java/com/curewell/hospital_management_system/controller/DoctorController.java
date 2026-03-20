@@ -1,32 +1,37 @@
 package com.curewell.hospital_management_system.controller;
 
 import com.curewell.hospital_management_system.entity.Doctor;
-import com.curewell.hospital_management_system.repository.DoctorRepository;
+import com.curewell.hospital_management_system.service.DoctorService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/doctors")
 public class DoctorController {
 
-    private final DoctorRepository doctorRepository;
+    private final DoctorService doctorService;
 
-    public DoctorController(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
+    // Constructor Injection
+    public DoctorController(DoctorService doctorService) {
+        this.doctorService = doctorService;
     }
 
+    // POST → Create Doctor
     @PostMapping
     public Doctor createDoctor(@RequestBody Doctor doctor) {
-        return doctorRepository.save(doctor);
+        return doctorService.createDoctor(doctor);
     }
 
+    // GET → Fetch All Doctors
     @GetMapping
     public List<Doctor> getAllDoctors() {
-        return doctorRepository.findAll();
+        return doctorService.getAllDoctors();
     }
 
+    // GET → Fetch Doctor by ID
     @GetMapping("/{id}")
     public Doctor getDoctorById(@PathVariable Long id) {
-        return doctorRepository.findById(id).orElse(null);
+        return doctorService.getDoctorById(id);
     }
 }
