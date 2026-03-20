@@ -18,6 +18,11 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor createDoctor(Doctor doctor) {
+
+        if (doctorRepository.existsByEmailId(doctor.getEmailId())) {
+            throw new RuntimeException("Doctor with this email already exists");
+        }
+
         return doctorRepository.save(doctor);
     }
 
@@ -28,6 +33,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor getDoctorById(Long id) {
-        return doctorRepository.findById(id).orElse(null);
+        return doctorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));
     }
 }
