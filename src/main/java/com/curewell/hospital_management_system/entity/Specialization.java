@@ -2,6 +2,8 @@ package com.curewell.hospital_management_system.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,4 +18,8 @@ public class Specialization {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @ManyToMany(mappedBy = "specializations")
+    @JsonIgnore
+    private List<Doctor> doctors;
 }
