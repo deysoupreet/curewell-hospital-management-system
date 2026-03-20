@@ -24,4 +24,9 @@ public class DoctorController {
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
+
+    @GetMapping("/{id}")
+    public Doctor getDoctorById(@PathVariable Long id) {
+        return doctorRepository.findById(id).orElse(null);
+    }
 }
