@@ -19,8 +19,8 @@ public class SurgeryServiceImpl implements SurgeryService {
     private final SpecializationRepository specializationRepository;
 
     public SurgeryServiceImpl(SurgeryRepository surgeryRepository,
-                              DoctorRepository doctorRepository,
-                              SpecializationRepository specializationRepository) {
+            DoctorRepository doctorRepository,
+            SpecializationRepository specializationRepository) {
         this.surgeryRepository = surgeryRepository;
         this.doctorRepository = doctorRepository;
         this.specializationRepository = specializationRepository;
@@ -69,19 +69,16 @@ public class SurgeryServiceImpl implements SurgeryService {
 
     private void validateDoctorSchedule(Long doctorId, Surgery surgery) {
 
-        List<Surgery> existingSurgeries =
-                surgeryRepository.findByDoctorIdAndDate(doctorId, surgery.getDate());
+        List<Surgery> existingSurgeries = surgeryRepository.findByDoctorIdAndDate(doctorId, surgery.getDate());
 
         for (Surgery existing : existingSurgeries) {
 
-            boolean isOverlapping =
-                    !(surgery.getEndTime().isBefore(existing.getStartTime()) ||
-                      surgery.getStartTime().isAfter(existing.getEndTime()));
+            boolean isOverlapping = !(surgery.getEndTime().isBefore(existing.getStartTime()) ||
+                    surgery.getStartTime().isAfter(existing.getEndTime()));
 
             if (isOverlapping) {
                 throw new RuntimeException(
-                        "Doctor with ID " + doctorId + " has a conflicting surgery"
-                );
+                        "Doctor with ID " + doctorId + " has a conflicting surgery");
             }
         }
     }
@@ -94,12 +91,10 @@ public class SurgeryServiceImpl implements SurgeryService {
 
         dto.setDoctorName(
                 surgery.getDoctor().getFirstName() + " " +
-                surgery.getDoctor().getLastName()
-        );
+                        surgery.getDoctor().getLastName());
 
         dto.setSpecialization(
-                surgery.getSpecialization().getName()
-        );
+                surgery.getSpecialization().getName());
 
         dto.setDate(surgery.getDate());
         dto.setStartTime(surgery.getStartTime());
@@ -114,5 +109,14 @@ public class SurgeryServiceImpl implements SurgeryService {
         }
 
         return dto;
+    }
+
+    @Override
+    public List<SurgeryResponseDTO> getAllSurgeries() {
+
+        return surgeryRepository.findAll()
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 }
