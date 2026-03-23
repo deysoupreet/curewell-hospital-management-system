@@ -1,6 +1,7 @@
 package com.curewell.hospital_management_system.service.impl;
 
 import com.curewell.hospital_management_system.dto.SurgeryRequestDTO;
+import com.curewell.hospital_management_system.dto.SurgeryResponseDTO;
 import com.curewell.hospital_management_system.entity.Surgery;
 import com.curewell.hospital_management_system.repository.DoctorRepository;
 import com.curewell.hospital_management_system.repository.SpecializationRepository;
@@ -20,14 +21,13 @@ public class SurgeryServiceImpl implements SurgeryService {
     public SurgeryServiceImpl(SurgeryRepository surgeryRepository,
                               DoctorRepository doctorRepository,
                               SpecializationRepository specializationRepository) {
-
         this.surgeryRepository = surgeryRepository;
         this.doctorRepository = doctorRepository;
         this.specializationRepository = specializationRepository;
     }
 
     @Override
-    public Surgery createSurgeryFromDTO(SurgeryRequestDTO request) {
+    public SurgeryResponseDTO createSurgeryFromDTO(SurgeryRequestDTO request) {
 
         Surgery surgery = new Surgery();
 
@@ -48,7 +48,9 @@ public class SurgeryServiceImpl implements SurgeryService {
         surgery.setStartTime(request.getStartTime());
         surgery.setEndTime(request.getEndTime());
 
-        return createSurgery(surgery);
+        Surgery saved = createSurgery(surgery);
+
+        return mapToDTO(saved);
     }
 
     @Override
@@ -82,5 +84,35 @@ public class SurgeryServiceImpl implements SurgeryService {
                 );
             }
         }
+    }
+
+    private SurgeryResponseDTO mapToDTO(Surgery surgery) {
+
+        SurgeryResponseDTO dto = new SurgeryResponseDTO();
+
+        dto.setId(surgery.getId());
+
+        dto.setDoctorName(
+                surgery.getDoctor().getFirstName() + " " +
+                surgery.getDoctor().getLastName()
+        );
+
+        dto.setSpecialization(
+                surgery.getSpecialization().getName()
+        );
+
+        dto.setDate(surgery.getDate());
+        dto.setStartTime(surgery.getStartTime());
+        dto.setEndTime(surgery.getEndTime());
+
+        if (surgery.getAssistingDoctors() != null) {
+            var names = surgery.getAssistingDoctors().stream()
+                    .map(doc -> doc.getFirstName() + " " + doc.getLastName())
+                    .toList();
+
+            dto.setAssistingDoctorNames(names);
+        }
+
+        return dto;
     }
 }

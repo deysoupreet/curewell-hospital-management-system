@@ -1,6 +1,7 @@
 package com.curewell.hospital_management_system.controller;
 
 import com.curewell.hospital_management_system.dto.SurgeryRequestDTO;
+import com.curewell.hospital_management_system.dto.SurgeryResponseDTO;
 import com.curewell.hospital_management_system.entity.Surgery;
 import com.curewell.hospital_management_system.service.SurgeryService;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class SurgeryController {
     }
 
     @PostMapping
-    public Surgery createSurgery(@RequestBody SurgeryRequestDTO request) {
+    public SurgeryResponseDTO createSurgery(@RequestBody SurgeryRequestDTO request) {
         return surgeryService.createSurgeryFromDTO(request);
     }
 }
