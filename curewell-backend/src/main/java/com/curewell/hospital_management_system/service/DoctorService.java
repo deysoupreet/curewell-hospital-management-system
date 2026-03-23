@@ -13,4 +13,6 @@ public interface DoctorService {
     Doctor getDoctorById(Long id);
 
     void deleteDoctor(Long id);
+
+    Doctor updateDoctor(Long id, Doctor doctor);
 }

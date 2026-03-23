@@ -19,10 +19,10 @@ public class DoctorServiceImpl implements DoctorService {
     private final SurgeryRepository surgeryRepository;
 
     public DoctorServiceImpl(DoctorRepository doctorRepository,
-                         SurgeryRepository surgeryRepository) {
-    this.doctorRepository = doctorRepository;
-    this.surgeryRepository = surgeryRepository;
-}
+            SurgeryRepository surgeryRepository) {
+        this.doctorRepository = doctorRepository;
+        this.surgeryRepository = surgeryRepository;
+    }
 
     @Override
     public Doctor createDoctor(Doctor doctor) {
@@ -55,5 +55,17 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         doctorRepository.deleteById(id);
+    }
+
+    @Override
+    public Doctor updateDoctor(Long id, Doctor doctor) {
+        Doctor existing = doctorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doctor not found"));
+
+        existing.setFirstName(doctor.getFirstName());
+        existing.setLastName(doctor.getLastName());
+        existing.setEmailId(doctor.getEmailId());
+
+        return doctorRepository.save(existing);
     }
 }

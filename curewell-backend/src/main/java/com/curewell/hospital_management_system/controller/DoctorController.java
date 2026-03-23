@@ -13,12 +13,10 @@ public class DoctorController {
 
     private final DoctorService doctorService;
 
-    // Constructor Injection
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
     }
 
-    // POST → Create Doctor
     @PostMapping
     public Doctor createDoctor(@RequestBody Doctor doctor) {
         return doctorService.createDoctor(doctor);
@@ -37,5 +35,10 @@ public class DoctorController {
     @DeleteMapping("/{id}")
     public void deleteDoctor(@PathVariable Long id) {
         doctorService.deleteDoctor(id);
+    }
+
+    @PutMapping("/{id}")
+    public Doctor updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
+        return doctorService.updateDoctor(id, doctor);
     }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ViewDoctors() {
   const [doctors, setDoctors] = useState([]);
@@ -26,6 +27,8 @@ function ViewDoctors() {
         alert(err.response.data);
       });
   };
+
+  const navigate = useNavigate();
 
   return (
     <div style={{ padding: "20px" }}>
@@ -54,7 +57,9 @@ function ViewDoctors() {
                 <td>{doc.emailId}</td>
 
                 <td>
-                  <button>Edit</button>
+                  <button onClick={() => navigate(`/update-doctor/${doc.id}`)}>
+                    Edit
+                  </button>
                   <button onClick={() => handleDelete(doc.id)}>Delete</button>
                 </td>
               </tr>

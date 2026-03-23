@@ -6,6 +6,7 @@ import ViewDoctors from "./components/ViewDoctors";
 import AddDoctor from "./components/AddDoctor";
 import ViewSpecializations from "./components/ViewSpecializations";
 import ViewTodaySurgeries from "./components/ViewTodaySurgeries";
+import UpdateDoctor from "./components/UpdateDoctor";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/add-doctor" element={<AddDoctor />} />
         <Route path="/specializations" element={<ViewSpecializations />} />
         <Route path="/today-surgeries" element={<ViewTodaySurgeries />} />
+        <Route path="/update-doctor/:id" element={<UpdateDoctor />} />
       </Routes>
     </Router>
   );
