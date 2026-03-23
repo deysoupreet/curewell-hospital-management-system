@@ -24,15 +24,18 @@ public class DoctorController {
         return doctorService.createDoctor(doctor);
     }
 
-    // GET → Fetch All Doctors
     @GetMapping
     public List<Doctor> getAllDoctors() {
         return doctorService.getAllDoctors();
     }
 
-    // GET → Fetch Doctor by ID
     @GetMapping("/{id}")
     public Doctor getDoctorById(@PathVariable Long id) {
         return doctorService.getDoctorById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteDoctor(@PathVariable Long id) {
+        doctorService.deleteDoctor(id);
     }
 }

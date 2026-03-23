@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SurgeryRepository extends JpaRepository<Surgery, Long> {
     List<Surgery> findByDoctorIdAndDate(Long doctorId, LocalDate date);
+
+    List<Surgery> findByDoctorId(Long doctorId);
 }
